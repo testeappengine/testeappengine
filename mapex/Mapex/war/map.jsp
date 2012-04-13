@@ -13,7 +13,7 @@
         <script type="text/javascript" src="http://maps.google.com/maps/api/js?sensor=false"></script>
         <script type="text/javascript">
         
- 			// Funcoes de tratamento de string para pegar os argumentos
+	    // Funcoes de tratamento de string para pegar os argumentos
             function getLatArg(str) {
             	theleft = str.indexOf("=") + 1;
             	theright = str.lastIndexOf("&");
@@ -47,7 +47,7 @@
         </script>
     </head>
     <body  onload="init()">
-        <h1>Sua localiza&ccedil;&atilde;o</h1>
+        <h1>Localiza&ccedil;&atilde;o do IP fornecido</h1>
         <div id="map_canvas" style="width:100%;height:800px"></div>
     </body>
 </html>
