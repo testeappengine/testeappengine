@@ -19,7 +19,6 @@ public class MapexServlet extends HttpServlet {
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws IOException {
 		String ip = req.getParameter("ip");
-		log.info("ip de parametro: " + ip);
 		
 		String URL = "http://api.ipinfodb.com/v3/ip-city/?key=" + ipInfoDbKey + "&ip="+ip+"&format=XML";
 		String latitude = "0";
@@ -30,7 +29,6 @@ public class MapexServlet extends HttpServlet {
 			Document doc = db.parse(new URL(URL).openStream());
 			latitude = doc.getElementsByTagName("latitude").item(0).getChildNodes().item(0).getNodeValue();
 			longitude = doc.getElementsByTagName("longitude").item(0).getChildNodes().item(0).getNodeValue();
-			log.info("latitude: "+latitude+" longitude: "+longitude);
 		}
 		catch (Exception e) {
 			log.info("Excecao!");			

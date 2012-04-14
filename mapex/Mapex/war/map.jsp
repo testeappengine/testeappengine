@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>Sua localiza&ccedil;&atilde;o</title>
+        <title>Localiza&ccedil;&atilde;o do IP fornecido</title>
         <meta charset="utf-8">
         
         <!--  Form escondido para pegar os argumentos por URL -->
