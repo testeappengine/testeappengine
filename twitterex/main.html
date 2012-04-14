@@ -1,31 +1,24 @@
-<h1>Django!</h1>
+<h1>Cadastrar Novo Usu&aacute;rio</h1>
 
-{% ifnotequal errormessage '' %}
-   <p><font color=red><h3>Erro: {{errormessage}}</h3></font></p>
+{% ifnotequal statusmessage '' %}
+   <p><h3>Status: {{statusmessage}}</h3></p>
 {% endifnotequal %}
-
-{% for user in users %}
-<div>{{user.username}}:
-     p1: {{user.reqproperty1}}
-     p2: {{user.reqproperty2}}
-     p3:
-     {% ifequal user.optproperty '' %}
-        N&atilde;o Informado
-     {% else %}
-       Informado: {{user.optproperty}}
-     {% endifequal %}
-</div>
-{% endfor %}
 
 <form action="" method="post">
 
    <p>Nome do usu&aacute;rio*: <input type="text" name="username" value="" id="username" /></p>
-   <p>reqproperty1*: <input type="text" name="reqproperty1" value="" id="reqproperty1" /></p>
-   <p>reqproperty2*: <input type="text" name="reqproperty2" value="" id="reqproperty2" /></p>
-   <p>optproperty: <input type="text" name="optproperty" value="" id="optproperty" /></p>
+   <p>Telefone*: <input type="text" name="phone" value="" id="phone" /></p>
+   <p>E-mail*: <input type="text" name="email" value="" id="email" /></p>
+   <p>Conta Twitter: <input type="text" name="twitter" value="" id="twitter" /></p>
 
-   <p><input type="submit" value="Enviar" /></p>
+   <p><input type="submit" value="Cadastrar" /></p>
 
 </form>
 
 <p>Os campos com * s&atilde;o obrigat&oacute;rios.</p>
+
+<p>Para visualizar os usu&aacute;rios cadastrados clique em "Visualizar":
+<form action="/users" method="get">
+   <p><input type="submit" value="Visualizar" /></p>
+</form>
+</p>

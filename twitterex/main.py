@@ -7,44 +7,51 @@ from google.appengine.ext import db
 
 import tweepy # API de acesso ao twitter
 
-# Variavel global com possivel mensagem de erro
-errormessage = ''
+# Variavel global com mensagem de status
+statusmessage = ''
 
 # Modelo de banco de dados
 class User(db.Model):
    username = db.StringProperty(required=True)
-   reqproperty1 = db.StringProperty(required=True)
-   reqproperty2 = db.StringProperty(required=True)
-   optproperty = db.StringProperty()
-   when = db.DateTimeProperty(auto_now_add=True)
+   phone = db.StringProperty(required=True)
+   email = db.StringProperty(required=True)
+   twitter = db.StringProperty()
 
-# Tratador do aplicativo
-class TwitterExample(webapp.RequestHandler):
+# Pagina de cadastro
+class SignPage(webapp.RequestHandler):
+
+   site_url = 'http://twitterex-selecao.appspot.com'
+
    def get(self):
-      global errormessage
-      users = db.GqlQuery(
-         'SELECT * FROM User '
-	 'ORDER BY when DESC ')
+      global statusmessage
       values = {
-         'users': users,
-	 'errormessage': errormessage,
+	 'statusmessage': statusmessage,
       }
       self.response.out.write(template.render('main.html',values))
-      errormessage = ''
+      statusmessage = ''
 
    def post(self):
-      global errormessage
+      global statusmessage
+
       try: 
          user = User(
             username=self.request.get('username'),
-            reqproperty1=self.request.get('reqproperty1'),
-            reqproperty2=self.request.get('reqproperty2'),
-            optproperty=self.request.get('optproperty')
+            phone=self.request.get('phone'),
+            email=self.request.get('email'),
+            twitter=self.request.get('twitter')
          )
          user.put()
-	 self.tweet("user: " + self.request.get('username'))
+	 statusmessage = '<font color=green>Usu&aacute;rio ' + self.request.get('username') +' cadastrado com sucesso!</font>'
+	 try:
+            if self.request.get('twitter') != '':
+               mensagem = "@" + self.request.get('twitter') + " acabou de se cadastrar no site " + self.site_url
+            else:
+               mensagem = self.request.get('username') + " acabou de se cadastrar no site " + self.site_url
+  	    self.tweet(mensagem)
+	 except:
+	    statusmessage = '<font color="red">Erro ao postar mensagem no twitter.</font>'
       except:
-	 errormessage = 'Algum campo obrigat&oacute;rio n&atilde;o foi preenchido!'
+	 statusmessage = '<font color="red">Algum campo obrigat&oacute;rio n&atilde;o foi preenchido!</font>'
 
       self.redirect('/')
 
@@ -61,8 +68,23 @@ class TwitterExample(webapp.RequestHandler):
       api = tweepy.API(auth)
       result = api.update_status(message)
 
+# Pagina de lista de usuarios
+class UsersPage(webapp.RequestHandler):
+   def get(self):
+      global statusmessage
+      users = db.GqlQuery(
+         'SELECT * FROM User '
+	 'ORDER BY username ')
+      values = {
+         'users': users,
+	 'statusmessage': statusmessage,
+      }
+      self.response.out.write(template.render('users.html',values))
+
+
 def main():
-   app = webapp.WSGIApplication([ (r'.*', TwitterExample) ], debug=True)
+   app = webapp.WSGIApplication([ ('/', SignPage),
+   				  ('/users', UsersPage) ])
    wsgiref.handlers.CGIHandler().run(app)
 
 if __name__ == "__main__":

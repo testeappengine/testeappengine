@@ -1,0 +1,33 @@
+<h1>Lista de Usu&aacute;rios Cadastrados</h1>
+
+{% ifnotequal statusmessage '' %}
+   <p><h3>Status: {{statusmessage}}</h3></p>
+{% endifnotequal %}
+
+<table border="1">
+<tr>
+   <td>Nome de usu&aacute;rio</td>
+   <td>Telefone</td>
+   <td>E-mail</td>
+   <td>Conta do Twitter</td>
+</tr>
+
+{% for user in users %}
+   <tr>
+      <td>{{user.username}}</td>
+      <td>{{user.phone}}</td>
+      <td>{{user.email}}</td>
+      <td>
+      {% ifequal user.twitter '' %}
+           N/D
+      {% else %}
+          {{user.twitter}}
+      {% endifequal %}
+      </td>
+   </tr>
+{% endfor %}
+</table>
+
+<form action="/" method="get">
+   <p><input type="submit" value="Voltar" /></p>
+</form>
